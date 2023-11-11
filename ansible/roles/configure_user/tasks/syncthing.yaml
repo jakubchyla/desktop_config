@@ -1,0 +1,32 @@
+- name: Remove old config files
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.config/syncthing"
+    state: absent
+
+- name: Create syncthing config directory
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.config/syncthing"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "700"
+
+- name: Copy syncthing config files
+  ansible.builtin.copy:
+    src: "{{ config_files_repo_path }}/{{ inventory_hostname }}/syncthing/"
+    dest: "/home/{{ ansible_user }}/.config/syncthing"
+    remote_src: true
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "700"
+
+- name: Create sync directory files
+  ansible.builtin.command:
+    cmd: "/home/{{ ansible_user }}/src/config_files/syncthing.py {{ inventory_hostname }}"
+
+- name: Start and enable syncthing
+  ansible.builtin.systemd:
+    name: syncthing.service
+    scope: user
+    state: started
+    enabled: true

@@ -1,0 +1,5 @@
+- name: Enable services in firewall
+  ansible.posix.firewalld:
+    service: syncthing
+    permanent: true
+    state: enabled

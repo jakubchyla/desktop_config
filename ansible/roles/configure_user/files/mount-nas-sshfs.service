@@ -1,0 +1,9 @@
+[Unit]
+Description=Mount nas with sshfs
+After=network-online.target
+
+[Service]
+ExecStart=%h/bin/mount-nas-sshfs
+
+[Install]
+WantedBy=default.target

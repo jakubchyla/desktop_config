@@ -1,0 +1,1 @@
+config_files_repo_path: "/home/{{ ansible_user }}/src/config_files"

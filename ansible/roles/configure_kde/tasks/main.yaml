@@ -1,0 +1,7 @@
+- name: Configure themes
+  ansible.builtin.import_tasks:
+    file: "configure_theme.yaml"
+
+- name: Copy config files
+  ansible.builtin.import_tasks:
+    file: "copy_config_files.yaml"

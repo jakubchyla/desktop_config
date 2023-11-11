@@ -1,0 +1,7 @@
+- name: Ensure src directory exists
+  ansible.builtin.file:
+    path: "/home{{ ansible_user }}/src"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "700"

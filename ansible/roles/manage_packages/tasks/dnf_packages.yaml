@@ -1,0 +1,31 @@
+- name: Remove unneeded packages
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_remove }}"
+    state: absent
+    autoremove: true
+
+- name: Upgrade all packages
+  tags:
+    - dnf_upgrade
+    - dnf_update
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+    update_cache: true
+
+- name: Install packages
+  ansible.builtin.dnf:
+    name: "{{ dnf_packages_install }}"
+    state: present
+    update_cache: true
+    allowerasing: true
+
+- name: Install Hashicorp packages
+  tags:
+    - "hashicorp"
+    - "Hashicorp"
+  ansible.builtin.dnf:
+    name: "{{ dnf_hashicorp_packages }}"
+    state: present
+    update_cache: true
+    allowerasing: true

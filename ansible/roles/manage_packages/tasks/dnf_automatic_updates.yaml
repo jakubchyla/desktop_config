@@ -1,0 +1,5 @@
+- name: Enable and start daily dnf automatic
+  ansible.builtin.systemd:
+    name: dnf-automatic.timer
+    state: started
+    enabled: true

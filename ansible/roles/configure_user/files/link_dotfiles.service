@@ -1,0 +1,6 @@
+[Unit]
+Description=Run dotfiles/config.py
+
+[Service]
+ExecStart=%h/dotfiles/config.py ln
+Type=oneshot

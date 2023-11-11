@@ -1,0 +1,11 @@
+- name: Configure theme
+  ansible.builtin.shell:
+    cmd: "plasma-apply-lookandfeel -a org.kde.breezedark.desktop"
+
+- name: Configure colorscheme
+  ansible.builtin.shell:
+    cmd: "plasma-apply-colorscheme BreezeDark"
+
+- name: Configure icon theme
+  ansible.builtin.shell:
+    cmd: 'kwriteconfig5 --file ~/.config/kdeglobals --group "Icons" --key "Theme" "Papirus-Dark"'

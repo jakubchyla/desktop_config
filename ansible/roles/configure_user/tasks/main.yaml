@@ -1,0 +1,26 @@
+- name: Configure nas
+  ansible.builtin.import_tasks:
+    file: "nas.yaml"
+
+- name: Add and start systemd services
+  ansible.builtin.import_tasks:
+    file: "services.yaml"
+
+- name: Download config files
+  tags:
+    - "config_files"
+  ansible.builtin.import_tasks:
+    file: "download_config_files.yaml"
+
+- name: Configure syncthing
+  tags:
+    - "syncthing"
+  ansible.builtin.import_tasks:
+    file: "syncthing.yaml"
+
+- name: Manage vim plugins
+  tags:
+    - vim
+    - Vim
+  ansible.builtin.import_tasks:
+    file: "vim_plugins.yaml"

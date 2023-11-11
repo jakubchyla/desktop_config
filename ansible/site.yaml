@@ -1,0 +1,38 @@
+- name: Setup repoistories and packages
+  tags:
+    - "packages"
+  become: true
+  become_user: root
+  hosts: all
+  roles:
+    - manage_packages
+
+- name: Configure system
+  tags:
+    - "configure_system"
+  become: true
+  become_user: root
+  hosts: all
+  roles:
+    - configure_system
+
+- name: Configure user
+  vars_files:
+    - "vars.yaml"
+  tags:
+    - "configure_user"
+  hosts: all
+  roles:
+    - configure_user
+
+- name: Configure KDE
+  vars_files:
+    - "vars.yaml"
+  tags:
+    - kde
+    - KDE
+    - plasma
+    - Plasma
+  hosts: all
+  roles:
+    - configure_kde

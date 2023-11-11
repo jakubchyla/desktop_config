@@ -1,0 +1,20 @@
+- name: Ensure config files directory is empty
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/src/config_files"
+    state: absent
+
+- name: Copy ssh key if testing
+  ansible.builtin.copy:
+    src: "~/.ssh/config_files_repo"
+    dest: "/home/{{ ansible_user }}/.ssh/config_files_repo"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "600"
+  when: testing is defined
+
+- name: Download config files
+  ansible.builtin.git:
+    accept_newhostkey: true
+    repo: "git@github.com:jakubchyla/config_files.git"
+    dest: "/home/{{ ansible_user }}/src/config_files"
+    ssh_opts: "-i ~/.ssh/config_files_repo"

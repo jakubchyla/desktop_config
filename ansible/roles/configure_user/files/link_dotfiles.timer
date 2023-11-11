@@ -1,0 +1,9 @@
+[Unit]
+Description=Run dotfiles/config.py every 15 minutes
+
+[Timer]
+OnCalendar=*-*-* *:00/15:00
+Persistent=false
+
+[Install]
+WantedBy=timers.target

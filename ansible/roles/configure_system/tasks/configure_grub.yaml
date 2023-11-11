@@ -1,0 +1,7 @@
+- name: Change grub timeout to 10 seconds
+  ansible.builtin.lineinfile:
+    path: "/etc/default/grub"
+    regexp: '^GRUB_TIMEOUT='
+    line: 'GRUB_TIMEOUT=10'
+    state: present
+  notify: Update grub

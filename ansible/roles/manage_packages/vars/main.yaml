@@ -1,0 +1,40 @@
+dnf_packages_install:
+  - acl
+  - bridge-utils
+  - code
+  - dnf-automatic
+  - doublecmd-qt
+  - firewalld
+  - flatpak
+  - git
+  - jq
+  - keepassxc
+  - levien-inconsolata-fonts
+  - neovim
+  - nmap
+  - nodejs
+  - nodejs-bash-language-server
+  - papirus-icon-theme
+  - python3-ansible-lint
+  - python3-jmespath
+  - python3-firewall
+  - syncthing
+  - tmux
+  - transmission-qt
+  - xclip
+  - xdotool
+  - zsh
+  - "@multimedia"
+  - "@virtualization"
+dnf_hashicorp_packages:
+  - vagrant
+  - vault
+dnf_packages_remove:
+  - firefox
+flatpak_packages_install:
+  - com.discordapp.Discord
+  - com.github.tchx84.Flatseal
+  - org.mozilla.firefox
+  - com.valvesoftware.Steam
+  - com.valvesoftware.Steam.CompatibilityTool.Proton-GE
+  - org.videolan.VLC

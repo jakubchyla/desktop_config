@@ -1,0 +1,126 @@
+- name: Install kubectl
+  tags:
+    - kubectl
+    - kubernetes
+  block:
+    - name: Get kubectl version
+      ansible.builtin.set_fact:
+        kubectl_version: "{{ lookup('ansible.builtin.url', 'https://dl.k8s.io/release/stable.txt') }}"
+
+    - name: Get kubectl checksum
+      ansible.builtin.set_fact:
+        kubectl_checksum: "{{ 'sha256:' + lookup('ansible.builtin.url', 'https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl.sha256') }}"
+
+    - name: Download kubectl
+      ansible.builtin.get_url:
+        url: "https://dl.k8s.io/release/{{ kubectl_version }}/bin/linux/amd64/kubectl"
+        dest: "/tmp/kubectl"
+        checksum: "{{ kubectl_checksum }}"
+        mode: 700
+
+    - name: Ensure ~/bin directory exists
+      ansible.builtin.file:
+        path: "/home/{{ ansible_user }}/bin"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "700"
+
+    - name: Install kubectl
+      ansible.builtin.copy:
+        src: "/tmp/kubectl"
+        dest: "/home/{{ ansible_user }}/bin/kubectl"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "700"
+        remote_src: true
+
+- name: Install helm
+  tags:
+    - helm
+    - kubernetes
+  block:
+    - name: Get helm version
+      ansible.builtin.set_fact:
+        helm_version: "{{ lookup('ansible.builtin.url', 'https://api.github.com/repos/helm/helm/releases/latest') | from_json | json_query('tag_name') }}"
+
+    - name: Get checksum url
+      ansible.builtin.set_fact:
+        helm_checksum_url: "https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz.sha256sum"
+
+    - name: Get helm checksum
+      ansible.builtin.set_fact:
+        helm_checksum: "{{ 'sha256:' + lookup('ansible.builtin.url', '{{ helm_checksum_url }}') | split(' ') | first }}"
+
+    - name: Download helm
+      ansible.builtin.get_url:
+        url: "https://get.helm.sh/helm-{{ helm_version }}-linux-amd64.tar.gz"
+        dest: "/tmp/helm-{{ helm_version }}-linux-amd64.tar.gz"
+        checksum: "{{ helm_checksum }}"
+        mode: "600"
+
+    - name: Ensure ~/bin directory exists
+      ansible.builtin.file:
+        path: "/home/{{ ansible_user }}/bin"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "700"
+
+    - name: Install helm
+      ansible.builtin.unarchive:
+        src: "/tmp/helm-{{ helm_version }}-linux-amd64.tar.gz"
+        dest: "/home/{{ ansible_user }}/bin"
+        include: "linux-amd64/helm"
+        remote_src: true
+        extra_opts: [--strip-components=1]
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "700"
+        creates: "/home/{{ ansible_user }}/bin/helm"
+
+
+- name: Install flux
+  tags:
+    - "flux"
+    - "Flux"
+  block:
+    - name: Get flux version
+      ansible.builtin.set_fact:
+        flux_version: "{{ lookup('ansible.builtin.url', 'https://api.github.com/repos/fluxcd/flux2/releases/latest') |
+                      from_json | json_query('tag_name') | regex_replace('^v', '') }}"
+
+    - name: Get checksum url
+      ansible.builtin.set_fact:
+        flux_checksum_url: "https://github.com/fluxcd/flux2/releases/download/v{{ flux_version }}/flux_{{ flux_version }}_checksums.txt"
+
+    - name: Get checksum
+      ansible.builtin.set_fact:
+        flux_checksum: "{{ 'sha256:' + lookup('ansible.builtin.url', '{{ flux_checksum_url }}') |
+                       regex_findall('([0-9a-f]{64})\\s+flux_' + flux_version + '_linux_amd64.tar.gz' | string) | first }}"
+
+    - name: Download flux
+      ansible.builtin.get_url:
+        url: "https://github.com/fluxcd/flux2/releases/download/v{{ flux_version }}/flux_{{ flux_version }}_linux_amd64.tar.gz"
+        dest: "/tmp/flux_{{ flux_version }}_linux_amd64.tar.gz"
+        checksum: "{{ flux_checksum }}"
+        mode: "600"
+
+    - name: Ensure ~/bin directory exists
+      ansible.builtin.file:
+        path: "/home/{{ ansible_user }}/bin"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "700"
+
+    - name: Install flux
+      ansible.builtin.unarchive:
+        src: "/tmp/flux_{{ flux_version }}_linux_amd64.tar.gz"
+        dest: "/home/{{ ansible_user }}/bin"
+        include: "flux"
+        remote_src: true
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode: "700"
+        creates: "/home/{{ ansible_user }}/bin/flux"

@@ -1,0 +1,46 @@
+#! /usr/bin/env bash
+
+catch_term()
+{
+    printf "%s\n" "caught SIGTERM" 
+    printf "%s\n" "unmounting" 
+    fusermount3 -u ~/storage/sshfs
+    kill -TERM "$PID"
+}
+
+catch_quit()
+{
+    printf "%s\n" "caught SIGTERM" 
+    printf "%s\n" "unmounting" 
+    fusermount3 -u ~/storage/sshfs
+    kill -QUIT "$PID"
+}
+
+catch_kill()
+{
+    printf "%s\n" "caught SIGKILL" 
+    printf "%s\n" "unmounting" 
+    fusermount3 -u ~/storage/sshfs
+    kill -KILL "$PID"
+}
+
+catch_ctrlc()
+{
+    printf "%s\n" "caught CTRL+C" 
+    printf "%s\n" "unmounting" 
+    fusermount3 -u ~/storage/sshfs
+    kill -KILL "$PID"
+}
+
+PID=$$
+
+trap catch_term SIGTERM
+trap catch_quit SIGQUIT
+trap catch_kill SIGKILL
+trap catch_ctrlc INT
+
+printf "%s\n" "mounting from local network" 
+sshfs -o kernel_cache,allow_other,auto_cache,reconnect,no_readahead,ServerAliveInterval=10 hades_sshfs_local:./nas ~/storage/sshfs
+
+printf "%s\n" "waiting..."
+sleep inf

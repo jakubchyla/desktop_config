@@ -1,0 +1,12 @@
+all:
+  vars:
+    ansible_ssh_common_args: >
+      -o 'StrictHostKeyChecking=no'
+      -o 'ForwardAgent yes'
+    ansible_user: vagrant
+    ansible_ssh_private_key_file: ~/.ssh/vagrant
+    ansible_python_interpreter: /usr/bin/python3
+    testing: true
+  hosts:
+    vagrant1:
+      ansible_host: 192.168.122.245

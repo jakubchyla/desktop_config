@@ -1,0 +1,62 @@
+- name: Add defaultyes=true to /etc/dnf/dnf.conf
+  ansible.builtin.lineinfile:
+    path: "/etc/dnf/dnf.conf"
+    regexp: "^defaultyes="
+    line: "defaultyes=true"
+    state: present
+
+- name: Change max_parallel_downloads to 10
+  ansible.builtin.lineinfile:
+    path: "/etc/dnf/dnf.conf"
+    regexp: "^max_parallel_downloads="
+    line: "max_parallel_downloads=10"
+    state: present
+
+- name: Install python3-dnf
+  ansible.builtin.command:
+    cmd: "dnf install -y python3-dnf"
+
+- name: Add RPM Fusion free key
+  tags:
+    - "rpmfusion"
+  ansible.builtin.rpm_key:
+    key: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
+    state: present
+
+- name: Add RPM Fusion non-free key
+  tags:
+    - "rpmfusion"
+  ansible.builtin.rpm_key:
+    key: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
+    state: present
+
+- name: Enable the RPM Fusion repository
+  tags:
+    - "rpmfusion"
+  ansible.builtin.dnf:
+    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+
+- name: Enable vscode repository
+  tags:
+    - "vscode"
+    - "Vscode"
+  ansible.builtin.yum_repository:
+    name: vscode
+    description: Visual Studio Code repository
+    baseurl: "https://packages.microsoft.com/yumrepos/vscode"
+    gpgkey: "https://packages.microsoft.com/keys/microsoft.asc"
+    gpgcheck: true
+
+- name: Enable hashicorp repository
+  tags:
+    - "hashicorp"
+    - "Hashicorp"
+  ansible.builtin.yum_repository:
+    name: "hashicorp"
+    description: "HashiCorp repository"
+    baseurl: "https://rpm.releases.hashicorp.com/fedora/$releasever/$basearch/stable"
+    enabled: true
+    gpgcheck: true
+    gpgkey:
+      - "https://rpm.releases.hashicorp.com/gpg"

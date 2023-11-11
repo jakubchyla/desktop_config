@@ -1,0 +1,38 @@
+- name: Ensure user systemd directory exists
+  ansible.builtin.file:
+    path: "/home/{{ ansible_user }}/.config/systemd/user"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "700"
+
+- name: Copy systemd unit files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "{{ ansible_user_dir }}/.config/systemd/user/{{ item }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "600"
+  loop:
+    - "link_dotfiles.service"
+    - "link_dotfiles.timer"
+    - "mount-nas-sshfs.service"
+    - "gpg-agent.service"
+
+- name: Start and enable services
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    scope: user
+    state: started
+    enabled: true
+  loop:
+    - "gpg-agent.service"
+    - "mount-nas-sshfs.service"
+
+- name: Enable timers
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    scope: user
+    enabled: true
+  loop:
+    - "link_dotfiles.timer"

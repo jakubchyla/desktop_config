@@ -1,0 +1,34 @@
+- name: Configure dnf
+  tags:
+    - configure_dnf
+    - dnf
+    - DNF
+  ansible.builtin.import_tasks:
+    file: "configure_dnf.yaml"
+
+- name: Install dnf packages
+  tags:
+    - dnf
+    - DNF
+  ansible.builtin.import_tasks:
+    file: "dnf_packages.yaml"
+
+- name: Enable automatic updates
+  tags:
+    - dnf
+    - DNF
+  ansible.builtin.import_tasks:
+    file: "dnf_automatic_updates.yaml"
+
+- name: Install flatpak packages
+  tags:
+    - flatpak
+    - Flatpak
+  become: true
+  become_user: "{{ ansible_user }}"
+  ansible.builtin.import_tasks:
+    file: "flatpak_packages.yaml"
+
+- name: Install user packages
+  ansible.builtin.import_tasks:
+    file: "user_packages.yaml"

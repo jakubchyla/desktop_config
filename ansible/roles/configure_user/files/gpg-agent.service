@@ -1,0 +1,5 @@
+[Unit]
+Description=GPG agent with ssh-agent support
+
+[Service]
+ExecStart=/usr/bin/gpg-connect-agent

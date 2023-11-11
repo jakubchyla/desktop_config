@@ -1,0 +1,14 @@
+- name: Ensure neovim config directories exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "700"
+  loop:
+    - "/home/{{ ansible_user }}/.local/share/nvim/site"
+
+- name: Copy plugin files
+  ansible.builtin.unarchive:
+    src: "vim_plugins.tar"
+    dest: "/home/{{ ansible_user }}/.local/share/nvim/site"

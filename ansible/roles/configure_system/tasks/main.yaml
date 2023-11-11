@@ -1,0 +1,11 @@
+- name: Set hostname
+  ansible.builtin.import_tasks:
+    file: "hostname.yaml"
+
+- name: Configure firewall
+  ansible.builtin.import_tasks:
+    file: "firewall.yaml"
+
+- name: Configure grub
+  ansible.builtin.import_tasks:
+    file: "configure_grub.yaml"
