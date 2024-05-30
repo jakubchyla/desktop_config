@@ -9,3 +9,10 @@
 - name: Configure grub
   ansible.builtin.import_tasks:
     file: "configure_grub.yaml"
+
+- name: Configure kernel modules
+  tags:
+    - "kernel_modules"
+    - "configure_kernel_modules"
+  ansible.builtin.import_tasks:
+    file: "configure_kernel_module.yaml"

@@ -1,0 +1,9 @@
+- name: Disable powersaving in kernel sound module
+  tags:
+    - "kernel_sound"
+    - "kernel_sound_module"
+  community.general.modprobe:
+    name: "snd_hda_intel"
+    state: present
+    persistent: present
+    params: "power_save=0"
