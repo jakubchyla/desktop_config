@@ -5,3 +5,6 @@ all:
   hosts:
     poseidon:
       ansible_connection: local
+      host_packages:
+        - akmod-nvidia
+        - xorg-x11-drv-nvidia-cuda

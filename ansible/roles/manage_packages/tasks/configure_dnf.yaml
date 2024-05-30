@@ -16,26 +16,52 @@
   ansible.builtin.command:
     cmd: "dnf install -y python3-dnf"
 
-- name: Add RPM Fusion free key
-  tags:
-    - "rpmfusion"
-  ansible.builtin.rpm_key:
-    key: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
-    state: present
+# - name: Add RPM Fusion free key
+#   tags:
+#     - "rpmfusion"
+#   ansible.builtin.rpm_key:
+#     key: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
+#     state: present
 
-- name: Add RPM Fusion non-free key
-  tags:
-    - "rpmfusion"
-  ansible.builtin.rpm_key:
-    key: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
-    state: present
+# - name: Add RPM Fusion non-free key
+#   tags:
+#     - "rpmfusion"
+#   ansible.builtin.rpm_key:
+#     key: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
+#     state: present
 
-- name: Enable the RPM Fusion repository
+# - name: Enable the RPM Fusion repositories
+#   tags:
+#     - "rpmfusion"
+#   ansible.builtin.dnf:
+#     state: present
+#   loop:
+#     - "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+#     - "https://download1.rpmfusion.org/free/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+
+- name: Enable rpmfusion free repository
   tags:
-    - "rpmfusion"
-  ansible.builtin.dnf:
-    name: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
-    state: present
+    - rpmfusion
+    - rpmfusion
+    - RPMfusion
+  ansible.builtin.yum_repository:
+    name: rpmfusion-free
+    description: rpmfusion free repository
+    baseurl: "https://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-free-fedora-2020"
+    gpgcheck: true
+
+- name: Enable rpmfusion nonfree repository
+  tags:
+    - rpmfusion
+    - rpmfusion
+    - RPMfusion
+  ansible.builtin.yum_repository:
+    name: rpmfusion-nonfree
+    description: rpmfusion nonfree repository
+    baseurl: "https://download1.rpmfusion.org/free/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    gpgkey: "https://rpmfusion.org/keys?action=AttachFile&do=get&target=RPM-GPG-KEY-rpmfusion-nonfree-fedora-2020"
+    gpgcheck: true
 
 - name: Enable vscode repository
   tags:

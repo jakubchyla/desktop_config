@@ -1,4 +1,4 @@
-dnf_packages_install:
+manage_packages_dnf_base_packages:
   - acl
   - bridge-utils
   - code
@@ -26,15 +26,16 @@ dnf_packages_install:
   - zsh
   - "@multimedia"
   - "@virtualization"
-dnf_hashicorp_packages:
+manage_packages_dnf_vscode_packages:
+  - code
+manage_packages_dnf_hashicorp_packages:
   - vagrant
   - vault
-dnf_packages_remove:
+manage_packages_dnf_packages_remove:
   - firefox
-flatpak_packages_install:
+manage_packages_flatpak_packages_install:
   - com.discordapp.Discord
   - com.github.tchx84.Flatseal
   - org.mozilla.firefox
   - com.valvesoftware.Steam
-  - com.valvesoftware.Steam.CompatibilityTool.Proton-GE
   - org.videolan.VLC

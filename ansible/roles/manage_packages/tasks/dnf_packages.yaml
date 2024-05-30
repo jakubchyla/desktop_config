@@ -1,6 +1,6 @@
 - name: Remove unneeded packages
   ansible.builtin.dnf:
-    name: "{{ dnf_packages_remove }}"
+    name: "{{ manage_packages_dnf_packages_remove }}"
     state: absent
     autoremove: true
 
@@ -13,9 +13,20 @@
     state: latest
     update_cache: true
 
-- name: Install packages
+- name: Install base packages
   ansible.builtin.dnf:
-    name: "{{ dnf_packages_install }}"
+    name: "{{ manage_packages_dnf_base_packages }}"
+    state: present
+    update_cache: true
+    allowerasing: true
+
+- name: Install vscode packages
+  tags:
+    - "vscode"
+    - "Vscode"
+    - "Code"
+  ansible.builtin.dnf:
+    name: "{{ manage_packages_dnf_vscode_packages }}"
     state: present
     update_cache: true
     allowerasing: true
@@ -25,7 +36,15 @@
     - "hashicorp"
     - "Hashicorp"
   ansible.builtin.dnf:
-    name: "{{ dnf_hashicorp_packages }}"
+    name: "{{ manage_packages_dnf_hashicorp_packages }}"
     state: present
     update_cache: true
     allowerasing: true
+
+- name: Install host specific packages
+  ansible.builtin.dnf:
+    name: "{{ host_packages }}"
+    state: present
+    update_cache: true
+    allowerasing: true
+  when: host_packages is defined

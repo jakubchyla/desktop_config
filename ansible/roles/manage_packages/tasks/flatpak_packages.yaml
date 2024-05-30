@@ -7,7 +7,7 @@
 
 - name: Install flatpak packages
   community.general.flatpak:
-    name: "{{ flatpak_packages_install }}"
+    name: "{{ manage_packages_flatpak_packages_install }}"
     remote: flathub
     method: "user"
     state: present
