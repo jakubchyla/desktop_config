@@ -1,0 +1,54 @@
+[$Version]
+update_info=kwinrules.upd:replace-placement-string-to-enum,kwinrules.upd:use-virtual-desktop-ids
+
+[1]
+Description=Window settings for firefox
+clientmachine=localhost
+desktops=6db8934c-4b0a-4662-bd49-9ec484b3d9bb
+maximizehoriz=true
+maximizehorizrule=3
+maximizevert=true
+maximizevertrule=3
+title=YouTube — Mozilla Firefox
+types=1
+windowrole=browser
+windowrolematch=1
+wmclass=navigator firefox
+wmclasscomplete=true
+wmclassmatch=1
+
+[2]
+Description=Application settings for steam
+clientmachine=localhost
+desktops=6db8934c-4b0a-4662-bd49-9ec484b3d9bb
+desktopsrule=2
+wmclass=steamwebhelper steam
+wmclasscomplete=true
+wmclassmatch=1
+
+[General]
+count=2
+rules=1,2
+
+[b3d29c1b-da4a-4f36-8c6d-341c5e450ca2]
+Description=Application settings for steam
+clientmachine=localhost
+desktops=f680f725-0637-45ae-b35c-008825900a89
+desktopsrule=2
+wmclass=steamwebhelper steam
+wmclasscomplete=true
+wmclassmatch=1
+
+[e55deb2f-bcfe-4ca8-bdc2-bd8b795dbf3d]
+Description=Window settings for firefox
+maximizehoriz=true
+maximizehorizrule=3
+maximizevert=true
+maximizevertrule=3
+title=YouTube — Mozilla Firefox
+types=1
+windowrole=browser
+windowrolematch=1
+wmclass=navigator firefox
+wmclasscomplete=true
+wmclassmatch=1
